@@ -9,6 +9,7 @@ Ideally I would like to know what the developer steps are :
 - Are devs running linters locally only on the files they touched?
 - is the linter run before or after the build? Or alongside.
 - is it a pre-commit hook?
+- should linting add to the build time of the targets?
 - Or is there a dedicated server build that outputs the entire workspace's lint issues regularly to identify regression? (need for caching and incrementality?)
 - Do we want to patch the lint errors or just indicate them as warnings? cppLint does not write. 
 - Should linting issues fail the build? Legacy code tends to have many lint issues in older files, so it may cause too many hurdles to build.
