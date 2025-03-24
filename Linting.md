@@ -17,6 +17,10 @@ Ideally I would like to know how the developer steps are :
 - Add a Tensorflow/tools/cppLint directory within the tensorflow repository. Here include a cpplintaspect.bzl rule which creates an aspect that applies lint to the 
 - 
 
+# As validation action inside C++ rules :
+https://bazel.build/extending/rules#validation-actions
+
+adds to build time, build error and needs control on the rule. --run_validations
 
 # Steps to integrate cppLint via rules_lint: 
 
