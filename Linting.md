@@ -1,4 +1,9 @@
-## Integration of static code analysis tools
+## Integration of static code analysis tools like cppLint
+
+```
+cpplint is a static analysis tool, specifically a linter, for C++ code. It checks for style issues and deviations from Google's C++ style guide. It does not reformat code; instead, it reports violations that need to be manually corrected. Formatters, like clang-format, automatically adjust code layout, while cpplint focuses on identifying style inconsistencies and potential errors.
+```
+
 How static code analysis tools are integrated into bazel and how those targets are built should ideally depend on the usage patterns. 
 Ideally I would like to know how the developer steps are : 
 - Are devs running linters locally only on the files they touched?
