@@ -8,6 +8,7 @@ Ideally I would like to know how the developer steps are :
 - Do we want to path the lint errors or just indicate them as warnings?
 - Should linting issues fail the build? Legacy code tends to have many lint issues in older files, so it may cause too many hurdles to build.
 - Are going to cache lint results as part of bazel's ecosystem?
+- do normal caching and incrementality still apply?
   
 
 # Steps to cppLint as an "aspect"
