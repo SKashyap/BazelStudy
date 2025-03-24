@@ -11,7 +11,7 @@ Ideally I would like to know how the developer steps are :
 - do normal caching and incrementality still apply?
   
 
-# Steps to cppLint as an "aspect"
+# Steps to cppLint as an "aspect" (no need to change any rule)
 
 - Create an external depenedency on cppLint and register the respository in the project workspace for a hermetic cppLint integration.
 - Add a Tensorflow/tools/cppLint directory within the tensorflow repository. Here include a cpplintaspect.bzl rule which creates an aspect that applies lint to the 
