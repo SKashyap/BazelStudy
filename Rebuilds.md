@@ -5,7 +5,7 @@ times some targets get rebuilt. What would be your approach to resolve this issu
 
 ## Approach to solve. 
 
-1) Collect logs for the rebuilt binaries. ( -s command) . Comared two logs and spot the changing parameter.
+1) Collect logs for the rebuilt binaries. ( -s command) . Comared two logs and spot the changing parameter. Action-key = Hash(commands)
 2) Look out for Bazel logs providing a warning about cache invalidation. 
 3) Typically config parameters provided on command line lead to confusion when developers run the builds. Add short alias to to configs and embed them in .bazelrc to avoid cache invalidation.
 4) Figure out at what stage the invalidation occurred. 
