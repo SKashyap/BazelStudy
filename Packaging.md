@@ -9,7 +9,8 @@ At Figure, we are deploying N applications using TensorFlow and other shared lib
 ## What would be your process to select the right solution?
 
 I would ideally ask these questions first:
-- What is the deployment architecture of these N applications. Target deployment platform matters to our decision. 
+- Who are these packages for? The developers or for the software release ?
+- What is the deployment architecture of these N applications? Target deployment platform matters to our decision. 
 - How each of the N applications consumes the shared library in question.
 - Do we have a set of libraries identified as a "Shared kernel" for all applications developed in this organization?
 - Understand the dependency between the N applications and the shared kernel.
@@ -37,6 +38,7 @@ Con: docker size will become huge
 Con: Makes way for a lot of coupling between N applications.
 Pro: The version is easy since the docker generates a new hash for each change. 
 Con: SCA(software component analysis) and security become tedious with multiple dependencies.
+Pro: If your software exists in a complex ecosystem with many dependencies, it may not be possible to release just one part of it without coordinating that release with the other parts. Then it makes sense to deliver it as a "single platform" and this may serve that purpose. 
 
 #### A docker image for each application containing the shared libraries used by the application: 
 - Pro : Most suitable to the modern microservice architectures and simplifies deployment of each application. 
