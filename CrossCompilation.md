@@ -138,8 +138,26 @@ cc_toolchain_suite(
 
 ## New way : Platforms and constraints
 
-1) Defining the Bazel platform 
-2) Defining the C/C++ toolchain config using the contstraints
-3) Defining the C/C++ toolchain
-4) Register toolchain
-5) Toolchain resolution based on platforms
+1) Defining the Bazel platform .
+Existing constraints : 
+ cpu : https://github.com/bazelbuild/platforms/blob/main/cpu/BUILD  os: https://github.com/bazelbuild/platforms/blob/main/os/BUILD
+
+Extend by adding new constraints as needed by your new target platform : 
+```
+constraint_value(
+    name = "riscv64",
+    constraint_setting = "@platforms//cpu:cpu",
+)
+
+platform(
+    name = "my_new_platform",
+    constraint_values = [
+        ":riscv64",
+    ],
+)
+```
+
+2) Defining the C/C++ toolchain config using the constraints
+5) Defining the C/C++ toolchain
+6) Register toolchain
+7) Toolchain resolution based on platforms
