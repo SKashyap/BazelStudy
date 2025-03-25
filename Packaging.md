@@ -9,8 +9,8 @@ At Figure, we are deploying N applications using TensorFlow and other shared lib
 ## What would be your process to select the right solution?
 
 I would ideally ask these questions first:
-- Understand what is the deployment architecture of these N applications. Target deployment platform matters to our decision. 
-- Understand how each of the N applications consumes the shared library in question.
+- What is the deployment architecture of these N applications. Target deployment platform matters to our decision. 
+- How each of the N applications consumes the shared library in question.
 - Do we have a set of libraries identified as a "Shared kernel" for all applications developed in this organization?
 - Understand the dependency between the N applications and the shared kernel.
 - Do all libraries within this "Shared kernel" have a similar frequency of updates? We typically don't want to group a frequently changing library with a rare one and call it a shared kernel.
@@ -20,11 +20,12 @@ I would ideally ask these questions first:
 ## What are the pros/cons of each approach?
 
 #### A Debian package/RPM for each application and each shared library:
-- Works well when we require a tight integration with the host system on which these packages are installed. Ie, we have the host platform under our control. Example: VSphere Control Plane is a single large red-hat linux VM that runs N services or applications. Each service has its own package (rpm) and a common set of of shared libs are installed as different rpms. Example: Boost libraries. Whereas other libs whose usage may not be unified are packaged along with the application rpm and installed within it's directories. 
-- Pro: When a shared lib has a minor upgrade, we don't need to rebuild application binaries as long as there is ABI compatibility.
+- Con: Installation logic becomes complex. Each Application RPM must list its dependent RPMs. Their installation needs to be ordered by the installer.
+- Pro: Works well when we require a tight integration with the host system on which these packages are installed. Ie, we have the host platform under our control. Example: VSphere Control Plane is a single large Hat Linux VM that runs N services or applications. Each service has its own package (rpm) and a common set of of shared libs are installed as different rpms. Example: Boost libraries. Whereas, other libs whose usage may not be unified are packaged along with the application rpm and installed within it's directories. 
+- Pro: Partial upgrade possible for clients. When a shared lib has a minor upgrade, we don't need to rebuild application binaries as long as there is ABI compatibility.
 - Such a distribution architecture only works for dynamic linking and allows code reuse by N applications.
 - Pro: Management of library versions may be simpler with a Jenkins pipeline build each shared lib at a pinned version and spitting out a debian package.
-- Con: Application deployment does not come out of the box. Each Application RPM must list its dependent RPMs. Their installation needs to be ordered by the host's package manager.
+- Con: Application deployment does not come out of the box. 
 - Con: Not a very suitable way to deploy applications to the cloud.
 - Pro: RPMs can be used to build layers in our application-specific docker image. So, we can cater to teams needing container images as well as packages at the same time. 
   
