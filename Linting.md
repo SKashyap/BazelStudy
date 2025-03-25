@@ -73,9 +73,21 @@ adds to build time, build error and needs control on the rule. --run_validations
 https://registry.bazel.build/modules/aspect_rules_lint
 
 ## Steps to integrate as a test
+
+```
+py_test(
+    name = "solution_cpplint_test",
+    srcs = ["@cpplint_archive//:cpplint"],
+    args = ["solution/%s" % f for f in glob([
+        "**/*.cc",
+        "**/*.h",
+    ])],
+    data = [":solution_filegroup"],
+    main = "cpplint.py",
+)
+```
 https://github.com/RobotLocomotion/drake/blob/master/tools/lint/cpplint.bzl#L45
 
-https://stackoverflow.com/questions/60091054/configuring-static-analysis-or-linters-for-c-with-bazel
 
 ## Steps to integrate linter as a separate server build 
  bazel build //allFiles:linter  (rule can have a tag: no-linter , or cpp file can have a tag cpplint: Do not lint)
