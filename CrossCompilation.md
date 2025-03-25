@@ -17,6 +17,7 @@
 ## Legacy crosstool way 
 
 //Tensoflow/BUILD has all the contraints. 
+//tensorflow/tools/toolchains/BUILD has platforms
 
 #### Toolchain creation :
 ```
