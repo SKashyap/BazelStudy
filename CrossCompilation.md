@@ -4,11 +4,11 @@ Older Bazel : Crosstool and toolchains
 New Bazel : Platforms and toolchains. 
 
 ## Steps involved 
-- How do you identify a platform? How do you identify a new target platform? How do you identify a new host platform? Our case is a target platform. 
-- After identification how to make changes to the way you build it. Is it a new cpu arch? or a new os? These are enumerated in platforms. 
-- Create a cc_toolchain_suite based on toolchain config and propogate what platforms this toochain suite supports. There will be multiple toolchain_suite to support multiple environments. 
-- register different flavors of toolchain suites.
-- cc_toolchain becomes the signle rule to access any of the flavors and the correct toolchain is choosen at build time based on passed in information about host and target platform. 
+- How do you identify a platform? How do you identify a new target platform? Is it a new cpu architecture? New Os? New compiler flags?
+- After identification how to make changes to the way you build it. https://mipsym.github.io/mipsym/CrossCompile.html . Is it a new cpu arch? or a new os? These are enumerated in platforms. 
+- Create a cc_toolchain_config based on toolchain config changes and propogate what platforms this toochain suite supports. There will be multiple toolchains to support multiple environments. 
+- register different flavors of toolchains.
+- cc_toolchain becomes the single rule to access any of the flavors and the correct toolchain is choosen at build time based on passed in information about host and target platform. 
 - Toolchain per platform? For a Mac system building arm-linux build …what will the toolchain be? Toolchain can get the 
 - exec_compatible_With , target_compatible_with. 
 
