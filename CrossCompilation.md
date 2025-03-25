@@ -160,11 +160,52 @@ platform(
 )
 ```
 
-2) Defining the C/C++ toolchain config using the constraints
-5) Defining the C/C++ toolchain and mark with target_compatible_with , exec_compatible_with attribute to bind them to a platform.
-6) Register toolchain
-7) Toolchain resolution based on platforms
+2) Defining the C/C++ toolchain config using the constraints, features etc
+   
+```
+rv64_bare_metal_toolchain_config = rule(
+  implementation = _impl,
+  attrs = {},
+  provides = [CcToolchainConfigInfo],
+)
+
+  ```
+3) Defining the C/C++ toolchain and mark with target_compatible_with , exec_compatible_with attribute to bind them to a platform.
+   ```
+   toolchain(
+      name = "riscv64_bare_metal_toolchain_from_linux_x86_64",
+      exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+      ],
+      target_compatible_with = [
+        "//platform:bare_metal",
+        "@platforms//cpu:riscv64",
+      ],
+      toolchain = ":rv64_bare_metal_toolchain",
+      toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+   )
+   ```
+5) Register toolchain
+6) Toolchain resolution based on platforms
 
 ## Changes to the project rules based on the newly added platform
 - Avoid rules from getting executed on the new platform with `target_compatible_with` flag
-- Create `universal binary` rule which `selects` the correct binary based on platforms.  Example Crypto. 
+  ```
+    #bazel build -s --platforms=//platform:riscv64_bare_metal //program
+    cc_binary(
+      name = "program",
+      srcs = [
+        "program.c",
+        "boot.S",
+      ],
+      additional_linker_inputs = [
+        "link_script.ld",
+      ],
+      linkopts = ["-Wl,-T $(location :link_script.ld)"],
+      target_compatible_with = BARE_METAL_RISCV64_CONSTRAINTS,
+    )
+  ```
+- Create `universal binary` rule which `selects` the correct binary based on platforms.  Example Crypto.
+  <img width="609" alt="4 - Use platform information to pick dependencies" src="https://github.com/user-attachments/assets/21173bce-b938-4ea3-b78a-f4f44f103188" />
+
