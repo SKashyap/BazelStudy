@@ -79,5 +79,5 @@ def _linter_impl(target, ctx):
 
 linter = aspect(
     implementation = _linter_impl,
-    attr_aspects = ["implementation-deps"], # no transitive deps
+    attr_aspects = ["implementation-deps"], # for no transitive deps use: implementation-deps; else use "deps"
 )
