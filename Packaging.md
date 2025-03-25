@@ -25,7 +25,7 @@ I would ideally ask these questions first:
 - Pro: Partial upgrade possible for clients. When a shared lib has a minor upgrade, we don't need to rebuild application binaries as long as there is ABI compatibility.
 - Such a distribution architecture only works for dynamic linking and allows code reuse by N applications.
 - Pro: Management of library versions may be simpler with a Jenkins pipeline build each shared lib at a pinned version and spitting out a debian package.
-- Con: Application deployment does not come out of the box. 
+- Con: Application deployment does not come out of the box like in case of docker. 
 - Con: Not a very suitable way to deploy applications to the cloud.
 - Pro: RPMs can be used to build layers in our application-specific docker image. So, we can cater to teams needing container images as well as packages at the same time. 
   
