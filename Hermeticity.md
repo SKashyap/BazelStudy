@@ -5,7 +5,25 @@ A build is hermetic if it is not affected by the details of the environment wher
 
 Here are the different approaches to fish for hermeticity issues :  
 1) Diff the execution logs between minor changes to the environment. 
-2) Use Bazel's "WorkspaceEvents" log to look for rules that reach and grab details from the host system. https://docs.bazel.build/versions/master/workspace-log.html
+2) Use Bazel's "WorkspaceEvents" log to look for rules that reach and grab details from the host system. Events flagged as suspects :
+   ```
+    ExecuteEvent execute_event = 3;
+    DownloadEvent download_event = 4;
+    DownloadAndExtractEvent download_and_extract_event = 5;
+    FileEvent file_event = 6;
+    OsEvent os_event = 7;
+    SymlinkEvent symlink_event = 8;
+    TemplateEvent template_event = 9;
+    WhichEvent which_event = 10;
+    ExtractEvent extract_event = 11;
+    ReadEvent read_event = 12;
+    DeleteEvent delete_event = 13;
+    PatchEvent patch_event = 14;
+    RenameEvent rename_event = 15;
+   ```
+
+Ref: `--experimental_workspace_rules_log_file` => https://docs.bazel.build/versions/master/workspace-log.html
+
 3) Code review for common patterns of known hermetic issues. For example, in C++ projects, the linkOpts may refer to sharedLibs from the host systems.
 4) Getting external dependencies via bzlMod or ensuring they are pinned to a certain SHA-id is a good way to verify external library dependencies. (show example of hermetic python, and others with pinned SHA-ID)
 
@@ -142,9 +160,44 @@ def run_xcode_locator(repository_ctx, xcode_locator_src_label):
 ```
 
 
-2) shared library reference in 3rd party libs. 
+2) Although Tensorflow uses hermetic python, there may be external trasitive deps that do not use hermetic python. Like this one here using `which python3 , which python` to run a command  :
+```
+   location: "/private/var/tmp/_bazel_shwetha/62e3ac13802c5ff72c884d3c0fc01001/external/llvm-raw/utils/bazel/configure.bzl:39:38"
+context: "repository @@llvm-project"
+which_event {
+  program: "python3"
+}
+```
 
+3) shared library reference in third-party system lib deps  :
 
+```
+./third_party/xla/third_party/systemlibs/boringssl.BUILD
+cc_library(
+    name = "ssl",
+    linkopts = ["-lssl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":crypto",
+    ],
+)
+```
+
+```
+./third_party/flatbuffers/BUILD.system
+# Public flatc compiler library.
+cc_library(
+    name = "flatc_library",
+    linkopts = ["-lflatbuffers"],
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "lnflatc",
+    outs = ["flatc.bin"],
+    cmd = "ln -s $$(which flatc) $@",
+)
+```
 
 
 
