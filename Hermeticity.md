@@ -169,7 +169,7 @@ which_event {
 }
 ```
 
-3) shared library reference in third-party system lib deps  :
+3) shared library reference via likopts in third-party system lib deps  :
 
 ```
 ./third_party/xla/third_party/systemlibs/boringssl.BUILD
