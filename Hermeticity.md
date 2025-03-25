@@ -1,6 +1,9 @@
 # Hermeticity
 A build is hermetic if it is not affected by the details of the environment where it is performed. 
 
+<img width="796" alt="image" src="https://github.com/user-attachments/assets/7a370b27-90ac-4746-832d-e0d39ccaf96d" />
+
+
 ## How would you verify that the build is hermetic?
 
 Here are the different approaches to fish for hermeticity issues :  
