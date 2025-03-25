@@ -39,14 +39,29 @@ Con: Makes way for a lot of coupling between N applications.
 Pro: The version is easy since the docker generates a new hash for each change. 
 Con: SCA(software component analysis) and security become tedious with multiple dependencies.
 Pro: If your software exists in a complex ecosystem with many dependencies, it may not be possible to release just one part of it without coordinating that release with the other parts. Then it makes sense to deliver it as a "single platform" and this may serve that purpose. 
+Pro: isolation from the runtime host
 
 #### A docker image for each application containing the shared libraries used by the application: 
 - Pro : Most suitable to the modern microservice architectures and simplifies deployment of each application. 
-- Pro: isolation between the N applications. If components A and B both depend on shared library X, and X has a “minor” version bump that A needs but it happens to break B, you’re not in shared-library trouble, because the two components have their own copies of the library stack.
+- Pro: isolation from the runtime host; isolation between the N applications. If components A and B both depend on shared library X, and X has a “minor” version bump that A needs but it happens to break B, you’re not in shared-library trouble, because the two components have their own copies of the library stack.
 - Pro: De-couples lifecycle management(upgrade etc) of the N applications.
 - Pro: Allows different versions of shared-lib association for each application.
 - Pro: A common kernel of shared-libs can be used to build a base image which all N applications can derive from.
 - Pro : rebuild-redeploy-test only those apps that need Lib A when a new library version of A is introduced.
    
-## Should we use static or dynamic libraries?
+## static vs dynamic libraries
 
+Pros and Cons of each:
+Static library
+✔ Faster execution (no runtime linking overhead)
+✔ No external dependencies at runtime
+✖ Larger binary size
+✖ Requires rebuilding if the library is updated
+Dynamic library
+✔ Smaller executable size
+✔ Easier updates (just replace the .so/.dll file)
+✖ Slight runtime overhead due to dynamic linking
+
+## Should we use static or dynamic libraries?
+- For example, Borg Agents(kube), which run on any datacenter are statically linked to reduce dependencies on their runtime environment.  This is because these libs have no control of the host environment and can't afford a conflicting dynamic library being loaded.
+- Simpler, smaller set of infrequently varying libs are good candidates to be consumed a "shared-kernel" dynamically. 
