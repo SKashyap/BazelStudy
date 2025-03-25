@@ -116,8 +116,10 @@ cc_toolchain_suite(
 1) User specifies a `cc_toolchain_suite` target in the BUILD file and points Bazel to the target using the --crosstool_top option.
 
 .bazelrc
+```
 build:cross_compile_linux_arm64 --crosstool_top=//tensorflow/tools/toolchains/cross_compile/cc:cross_compile_toolchain_suite
 build:cross_compile_macos_x86 --crosstool_top=//tensorflow/tools/toolchains/cross_compile/cc:cross_compile_toolchain_suite
+```
 
 3) The cc_toolchain_suite target references multiple toolchains. The values of the --cpu and --compiler flags determine which of those toolchains is selected based only on the --cpu flag value or a joint --cpu | --compiler value. The selection process is as follows:
 ```
