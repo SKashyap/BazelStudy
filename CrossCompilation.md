@@ -163,3 +163,7 @@ platform(
 5) Defining the C/C++ toolchain
 6) Register toolchain
 7) Toolchain resolution based on platforms
+
+## Changes to the project rules based on the newly added platform
+- Avoid rules from getting executed on the new platform with `target_compatible_with` flag
+- Create `universal binary` rule which `selects` the correct binary based on platforms.  Example Crypto. 
