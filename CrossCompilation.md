@@ -16,6 +16,8 @@
 
 ## Legacy crosstool way 
 
+//Tensoflow/BUILD has all the contraints. 
+
 #### Toolchain creation :
 ```
 cc_toolchain(
