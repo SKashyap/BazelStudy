@@ -40,3 +40,7 @@ adds to build time, build error and needs control on the rule. --run_validations
 
 https://github.com/RobotLocomotion/drake/blob/master/tools/lint/cpplint.bzl#L45
 
+https://stackoverflow.com/questions/60091054/configuring-static-analysis-or-linters-for-c-with-bazel
+
+
+
