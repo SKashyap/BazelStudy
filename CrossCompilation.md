@@ -132,3 +132,14 @@ cc_toolchain_suite(
     },
 )
 ```
+
+
+
+
+## New way : Platforms and constraints
+
+1) Defining the Bazel platform 
+2) Defining the C/C++ toolchain config using the contstraints
+3) Defining the C/C++ toolchain
+4) Register toolchain
+5) Toolchain resolution based on platforms
