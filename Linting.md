@@ -16,14 +16,54 @@ Ideally I would like to know what the developer steps are :
 - Are we going to cache lint results as part of Bazel's ecosystem?
 
  In the interest of scoping this talk, I will focus on static code analysis alone. Not formatting. 
+
+ ![image](https://github.com/user-attachments/assets/eba6a737-45f2-4e8b-b6d9-0e3b0327899e)
+
   
 ## Steps to cppLint as an "aspect" (no need to change any rule)
 
-- Create an external dependency on cppLint and register the repository in the project workspace for a hermetic cppLint integration.
-- Make cppLint available as a tool within your workspace.
-- Add a Tensorflow/tools/cppLint directory within the tensorflow repository. Here include a cpplintaspect.bzl rule which creates an aspect that applies lint to the 
-- 
+![image](https://github.com/user-attachments/assets/093849f5-dbc2-4cac-a8dc-ef90f0663945)
 
+![image](https://github.com/user-attachments/assets/f71ff970-6fd9-45e4-aedb-05f8b3e90817)
+
+## My POC with non-hermetic cppunit
+
+Command:
+```
+bazel build //tensorflow/core/util:padding --macos_sdk_version=15.2 --aspects //tensorflow/core/util:cppLint_aspect.bzl%linter --output_groups=report
+```
+
+Output : 
+![image](https://github.com/user-attachments/assets/2d3125e0-0c0f-421c-9d39-6a7143ff8bbe)
+
+Contents of the generate lint text file : 
+![image](https://github.com/user-attachments/assets/700b9e44-a8b1-4eda-bda6-d7f552787378)
+
+## How to formally integrate
+- Create a tensorflow/third-party directory for cppLint.
+- Add a WORKSPACE file with rules to fetch cpplint from github / bzlmod for hermeticity.
+  ```
+  # //:WORKSPACE
+  bazel_dep(name = "cpplint", version = "2.0.0")
+  ```
+- Add a py_binary rule to capture the script :
+  ```
+  py_binary(
+    name = "cpplint",
+    srcs = ["cpplint.py"],
+  )
+  ```
+- Add an aspect definition on the lines `linter.bzl` of that uses cpp_lint as a hermetic tool or executable . Convert run_shell ro run() call. 
+- Register the repository in the project workspace for a hermetic cppLint integration.
+- Make `linter` aspect available to the tensorflow by add this external depenedency as "repository" -> @cppLint
+- Now rules within testflow can invoke it as follows :
+
+  ```
+   bazel build //... \
+  --aspects @bazel_cppLint//cppLint_aspect.bzl%linter \
+  --output_groups=report \
+  ```
+  
 ## As validation action inside C++ rules :
 https://bazel.build/extending/rules#validation-actions
 
@@ -37,9 +77,9 @@ https://github.com/RobotLocomotion/drake/blob/master/tools/lint/cpplint.bzl#L45
 
 https://stackoverflow.com/questions/60091054/configuring-static-analysis-or-linters-for-c-with-bazel
 
-## Steps to integrate linter as a seperate server build 
+## Steps to integrate linter as a separate server build 
  bazel build //allFiles:linter  (rule can have a tag: no-linter , or cpp file can have a tag cpplint: Do not lint)
 
- add a config to to want to lint or not. 
+ add a config to want to lint or not. 
 
  have a genrule/rule to trigger cpplint on all files within a directory. 
