@@ -37,3 +37,6 @@ adds to build time, build error and needs control on the rule. --run_validations
 
  have a genrule/rule to trigger cpplint on all files within a directory. 
 ## Steps to integrate as a test
+
+https://github.com/RobotLocomotion/drake/blob/master/tools/lint/cpplint.bzl#L45
+
