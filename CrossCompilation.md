@@ -1,7 +1,8 @@
 # Integrate a cross-compilation toolchain to this project (build for eVocore P8700 cpu)
 
-Older Bazel : Crosstool and toolchains
-New Bazel : Platforms and toolchains. 
+- Older Bazel : Crosstool and toolchains.
+- New Bazel : Platforms and toolchains.
+- cross-compile guide for MIPS : https://mipsym.github.io/mipsym/CrossCompile.html
 
 ## Steps involved 
 - How do you identify a platform? How do you identify a new target platform? Is it a new cpu architecture? New Os? New compiler flags?
