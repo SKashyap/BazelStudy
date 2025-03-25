@@ -65,12 +65,17 @@ Contents of the generate lint text file :
   ```
   
 ## As validation action inside C++ rules :
-https://bazel.build/extending/rules#validation-actions
+![image](https://github.com/user-attachments/assets/4d3f163e-af1e-4a93-b9a8-4cfe5a76d034)
 
-adds to build time, build error and needs control on the rule. --run_validations
+https://bazel.build/extending/rules#validation-actions
+`--run_validations` to turn on or off. 
+
+Cons: adds to build time, build error, and needs control over the rule. 
 
 ## Steps to integrate cppLint via rules_lint: 
 https://registry.bazel.build/modules/aspect_rules_lint
+
+PRo: add ANY linter with rule_lint. 
 
 ## Steps to integrate as a test
 
@@ -88,6 +93,7 @@ py_test(
 ```
 https://github.com/RobotLocomotion/drake/blob/master/tools/lint/cpplint.bzl#L45
 
+Cons: Needs the addition of test rules in every project for the sake of linting. 
 
 ## Steps to integrate linter as a separate server build 
  bazel build //allFiles:linter  (rule can have a tag: no-linter , or cpp file can have a tag cpplint: Do not lint)
@@ -95,3 +101,4 @@ https://github.com/RobotLocomotion/drake/blob/master/tools/lint/cpplint.bzl#L45
  add a config to want to lint or not. 
 
  have a genrule/rule to trigger cpplint on all files within a directory. 
+ Pro: incrementality
