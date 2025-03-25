@@ -7,7 +7,16 @@ Here are the different approaches to fish for hermeticity issues :
 1) Diff the execution logs between minor changes to the environment. 
 2) Use Bazel's "WorkspaceEvents" log to look for rules that reach and grab details from the host system. https://docs.bazel.build/versions/master/workspace-log.html
 3) Code review for common patterns of known hermetic issues. For example, in C++ projects, the linkOpts may refer to sharedLibs from the host systems.
-4) Getting external dependencies via bzlMod or ensuring they are pinned to a certain SHA-id is a good way to verify external library dependencies. (show example fo hermetic python, and other with pinned SHA-ID)
+4) Getting external dependencies via bzlMod or ensuring they are pinned to a certain SHA-id is a good way to verify external library dependencies. (show example of hermetic python, and others with pinned SHA-ID)
+
+```
+ Example:  all `download_and_extract_event` in this project is hermetic since sha256(version) is pinned
+
+> grep -B2 -A5 "download_and_extract_event" ../hemerticiyTest.txt | grep sha256 | wc -l
+      60
+> grep "download_and_extract_event" ../hemerticiyTest.txt | wc -l
+      60
+```
 
 ## Is there any hermeticity issue or limitation with this project?
 
