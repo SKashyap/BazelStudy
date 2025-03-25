@@ -161,7 +161,7 @@ platform(
 ```
 
 2) Defining the C/C++ toolchain config using the constraints
-5) Defining the C/C++ toolchain
+5) Defining the C/C++ toolchain and mark with target_compatible_with , exec_compatible_with attribute to bind them to a platform.
 6) Register toolchain
 7) Toolchain resolution based on platforms
 
