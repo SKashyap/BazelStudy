@@ -22,7 +22,7 @@ I would ideally ask these questions first:
 #### A Debian package/RPM for each application and each shared library:
 - Con: Installation logic becomes complex. Each Application RPM must list its dependent RPMs. Their installation needs to be ordered by the installer.
 - Pro: Works well when we require a tight integration with the host system on which these packages are installed. Ie, we have the host platform under our control. Example: VSphere Control Plane is a single large Hat Linux VM that runs N services or applications. Each service has its own package (rpm) and a common set of of shared libs are installed as different rpms. Example: Boost libraries. Whereas, other libs whose usage may not be unified are packaged along with the application rpm and installed within it's directories. 
-- Pro: Partial upgrade possible for clients. When a shared lib has a minor upgrade, we don't need to rebuild application binaries as long as there is ABI compatibility.
+- Pro: Partial upgrade possible for clients. When a shared lib has a minor upgrade, we don't need to rebuild application binaries as long as there is ABI compatibility. Example: security path on a third party lib. 
 - Such a distribution architecture only works for dynamic linking and allows code reuse by N applications.
 - Pro: Management of library versions may be simpler with a Jenkins pipeline build each shared lib at a pinned version and spitting out a debian package.
 - Con: Application deployment does not come out of the box like in case of docker. 
