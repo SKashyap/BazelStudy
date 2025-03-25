@@ -11,7 +11,128 @@ Here are the different approaches to fish for hermeticity issues :
 
 ## Is there any hermeticity issue or limitation with this project?
 
-1) non-hermetic clang usage
+1) Non-hermetic xcode-clang usage
+
+Symptom seen : tensorflow c++ targets `//tensorflow/core` cannot be readily built on macos when xcode(and clang) is not installed. After installing xcode, the local xcode config is read and then the compilation occurs. This is unlike Hermetic CUDA or Hermetic Python which never relies on host-system configurations. 
+
+In the logs, we can see this being highlighted under "execute_event" :
+
+```  
+location: "/private/var/tmp/_bazel_shwetha/62e3ac13802c5ff72c884d3c0fc01001/external/bazel_tools/tools/osx/xcode_configure.bzl:165:50"
+context: "repository @@local_config_xcode"
+execute_event {
+  arguments: "./xcode-locator-bin"
+  arguments: "-v"
+  timeout_seconds: 600
+  environment {
+  }
+  quiet: true
+  output_directory: "/private/var/tmp/_bazel_shwetha/62e3ac13802c5ff72c884d3c0fc01001/external/local_config_xcode"
+}
+```
+
+Source : https://github.com/bazelbuild/bazel/blob/master/tools/osx/xcode_configure.bzl
+
+```
+def run_xcode_locator(repository_ctx, xcode_locator_src_label):
+    """Generates xcode-locator from source and runs it.
+
+    Builds xcode-locator in the current repository directory.
+    Returns the standard output of running xcode-locator with -v, which will
+    return information about locally installed Xcode toolchains and the versions
+    they are associated with.
+
+    This should only be invoked on a darwin OS, as xcode-locator cannot be built
+    otherwise.
+
+    Args:
+      repository_ctx: The repository context.
+      xcode_locator_src_label: The label of the source file for xcode-locator.
+    Returns:
+      A 2-tuple containing:
+      output: A list representing installed xcode toolchain information. Each
+          element of the list is a struct containing information for one installed
+          toolchain. This is an empty list if there was an error building or
+          running xcode-locator.
+      err: An error string describing the error that occurred when attempting
+          to build and run xcode-locator, or None if the run was successful.
+    """
+    repository_ctx.report_progress("Building xcode-locator")
+    xcodeloc_src_path = str(repository_ctx.path(xcode_locator_src_label))
+    env = repository_ctx.os.environ
+    if "BAZEL_OSX_EXECUTE_TIMEOUT" in env:
+        timeout = int(env["BAZEL_OSX_EXECUTE_TIMEOUT"])
+    else:
+        timeout = OSX_EXECUTE_TIMEOUT
+
+    xcrun_result = repository_ctx.execute([
+        "env",
+        "-i",
+        "DEVELOPER_DIR={}".format(env.get("DEVELOPER_DIR", default = "")),
+        "xcrun",
+        "--sdk",
+        "macosx",
+        "clang",
+        "-mmacosx-version-min=10.13",
+        "-fobjc-arc",
+        "-framework",
+        "CoreServices",
+        "-framework",
+        "Foundation",
+        "-o",
+        "xcode-locator-bin",
+        xcodeloc_src_path,
+    ], timeout)
+
+    if (xcrun_result.return_code != 0):
+        suggestion = ""
+        if "Agreeing to the Xcode/iOS license" in xcrun_result.stderr:
+            suggestion = ("(You may need to sign the Xcode license." +
+                          " Try running 'sudo xcodebuild -license')")
+        error_msg = (
+            "Generating xcode-locator-bin failed. {suggestion} " +
+            "return code {code}, stderr: {err}, stdout: {out}"
+        ).format(
+            suggestion = suggestion,
+            code = xcrun_result.return_code,
+            err = xcrun_result.stderr,
+            out = xcrun_result.stdout,
+        )
+        return ([], error_msg.replace("\n", " "))
+
+    repository_ctx.report_progress("Running xcode-locator")
+    xcode_locator_result = repository_ctx.execute(
+        ["./xcode-locator-bin", "-v"],
+        timeout,
+    )
+    if (xcode_locator_result.return_code != 0):
+        error_msg = (
+            "Invoking xcode-locator failed, " +
+            "return code {code}, stderr: {err}, stdout: {out}"
+        ).format(
+            code = xcode_locator_result.return_code,
+            err = xcode_locator_result.stderr,
+            out = xcode_locator_result.stdout,
+        )
+        return ([], error_msg.replace("\n", " "))
+    xcode_toolchains = []
+
+    # xcode_dump is comprised of newlines with different installed Xcode versions,
+    # each line of the form <version>:<comma_separated_aliases>:<developer_dir>.
+    xcode_dump = xcode_locator_result.stdout
+    for xcodeversion in xcode_dump.split("\n"):
+        if ":" in xcodeversion:
+            infosplit = xcodeversion.split(":")
+            toolchain = struct(
+                version = infosplit[0],
+                aliases = infosplit[1].split(","),
+                developer_dir = infosplit[2],
+            )
+            xcode_toolchains.append(toolchain)
+    return (xcode_toolchains, None)
+```
+
+
 2) shared library reference in 3rd party libs. 
 
 
