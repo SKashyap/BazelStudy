@@ -38,7 +38,7 @@ Ref: `--experimental_workspace_rules_log_file` => https://docs.bazel.build/versi
 
 ## Is there any hermeticity issue or limitation with this project?
 
-1) Non-hermetic xcode-clang usage
+1) Non-hermetic toolchain : xcode-clang usage
 
 Symptom seen : tensorflow c++ targets `//tensorflow/core` cannot be readily built on macos when xcode(and clang) is not installed. After installing xcode, the local xcode config is read and then the compilation occurs. This is unlike Hermetic CUDA or Hermetic Python which never relies on host-system configurations. 
 
