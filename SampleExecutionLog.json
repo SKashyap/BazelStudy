@@ -1,0 +1,145 @@
+{
+  "commandArgs": ["bazel-out/darwin_arm64-opt-exec-ST-0465588ec812/bin/external/local_config_apple_cc/libtool", "@bazel-out/darwin_arm64-opt/bin/tensorflow/core/util/libpadding.a-2.params"],
+  "environmentVariables": [{
+    "name": "APPLE_SDK_PLATFORM",
+    "value": "MacOSX"
+  }, {
+    "name": "APPLE_SDK_VERSION_OVERRIDE",
+    "value": "15.2"
+  }, {
+    "name": "PATH",
+    "value": "/Users/shwetha/Library/Caches/bazelisk/downloads/sha256/02b117b97d0921ae4d4f4e11d27e2c0930381df416e373435d5d0419c6a26f24/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Applications/iTerm.app/Contents/Resources/utilities:/opt/homebrew/bin:/opt/homebrew/bin"
+  }, {
+    "name": "PYTHON_BIN_PATH",
+    "value": "/Library/Developer/CommandLineTools/usr/bin/python3"
+  }, {
+    "name": "PYTHON_LIB_PATH",
+    "value": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/site-packages"
+  }, {
+    "name": "TF2_BEHAVIOR",
+    "value": "1"
+  }, {
+    "name": "XCODE_VERSION_OVERRIDE",
+    "value": "16.2.0.16C5032a"
+  }],
+  "platform": {
+    "properties": []
+  },
+  "inputs": [{
+    "path": "bazel-out/darwin_arm64-opt-exec-ST-0465588ec812/bin/external/local_config_apple_cc/cc_wrapper.sh",
+    "digest": {
+      "hash": "f511e8489344d422850f108c8df97aaa9d29213c56a84cf20e435afcbaf96cb0",
+      "sizeBytes": "4253",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "bazel-out/darwin_arm64-opt-exec-ST-0465588ec812/bin/external/local_config_apple_cc/libtool",
+    "digest": {
+      "hash": "d5053f883b6945163a381256815c5c75bddfe8eaaed0fdcf2b097f966b52a278",
+      "sizeBytes": "4444",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "bazel-out/darwin_arm64-opt-exec-ST-0465588ec812/bin/external/local_config_apple_cc/libtool_check_unique",
+    "digest": {
+      "hash": "1fd95c24fba71deadea2a51ff596b4218ef9f061c54d748bf2c75edae59739f0",
+      "sizeBytes": "334448",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "bazel-out/darwin_arm64-opt-exec-ST-0465588ec812/bin/external/local_config_apple_cc/wrapped_clang",
+    "digest": {
+      "hash": "788094ec1cd7a16849acca3c4b36761160f537a8e2b638b23c0495e08279e21e",
+      "sizeBytes": "236672",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "bazel-out/darwin_arm64-opt-exec-ST-0465588ec812/bin/external/local_config_apple_cc/wrapped_clang_pp",
+    "digest": {
+      "hash": "df291cef32bd51e9ba2bad77c1c839599663b0ec04e1da4bc8c07e5beb93bf9e",
+      "sizeBytes": "236672",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "bazel-out/darwin_arm64-opt/bin/tensorflow/core/util/_objs/padding/padding.o",
+    "digest": {
+      "hash": "af5e7557b8fe3add17c98e8978a885d7cef4d732d3e9add779b2a86cd279d148",
+      "sizeBytes": "9856",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "bazel-out/darwin_arm64-opt/bin/tensorflow/core/util/libpadding.a-2.params",
+    "digest": {
+      "hash": "7de1a995c067f4352e8e91c4f244e1f9b4f0b8205c4fdc9054bcc104b637f20d",
+      "sizeBytes": "182",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "external/local_config_apple_cc/make_hashed_objlist.py",
+    "digest": {
+      "hash": "5ca717c3157e4554cbdb34520871b098db322f0766b3030d6114d2aaf3118e21",
+      "sizeBytes": "2056",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }, {
+    "path": "external/local_config_apple_cc/xcrunwrapper.sh",
+    "digest": {
+      "hash": "bea1171a177b4ab66d5bce49c2329537f547becbc85e7cc569a2b0ee4c2d2120",
+      "sizeBytes": "1550",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }],
+  "listedOutputs": ["bazel-out/darwin_arm64-opt/bin/tensorflow/core/util/libpadding.a"],
+  "remotable": true,
+  "cacheable": true,
+  "timeoutMillis": "0",
+  "mnemonic": "CppArchive",
+  "actualOutputs": [{
+    "path": "bazel-out/darwin_arm64-opt/bin/tensorflow/core/util/libpadding.a",
+    "digest": {
+      "hash": "230bcd1036be1de0793447b822444bc93186b998530b030e2ca348d595eeecb5",
+      "sizeBytes": "11312",
+      "hashFunctionName": "SHA-256"
+    },
+    "isTool": false,
+    "symlinkTargetPath": ""
+  }],
+  "runner": "local",
+  "cacheHit": false,
+  "status": "",
+  "exitCode": 0,
+  "remoteCacheable": true,
+  "targetLabel": "//tensorflow/core/util:padding",
+  "metrics": {
+    "totalTime": "0.051s",
+    "setupTime": "0.017s",
+    "executionWallTime": "0.027s",
+    "inputBytes": "0",
+    "inputFiles": "9",
+    "memoryEstimateBytes": "0",
+    "inputBytesLimit": "0",
+    "inputFilesLimit": "0",
+    "outputBytesLimit": "0",
+    "outputFilesLimit": "0",
+    "memoryBytesLimit": "0",
+    "startTime": "2025-03-26T17:23:47.073Z"
+  }
+}
