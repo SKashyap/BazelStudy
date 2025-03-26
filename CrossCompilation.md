@@ -10,13 +10,13 @@
 - Register different flavors of toolchains.
 - cc_toolchain becomes the single rule to access any of the flavors, and the correct toolchain is chosen at build time based on the passed in information about the host and target platform. 
 
-## New way : Platforms and constraints
+## New way : Platforms and constraints 
 
 1) Defining the Bazel platform.
 Existing constraints : 
  cpu : https://github.com/bazelbuild/platforms/blob/main/cpu/BUILD  os: https://github.com/bazelbuild/platforms/blob/main/os/BUILD
 
-Extend by adding new constraints as needed by your new target platform : 
+Extend by adding new constraints as needed by your new target platform. Here I have chosen a random platform for example. 
 ```
 constraint_value(
     name = "riscv64",
