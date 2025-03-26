@@ -2,17 +2,63 @@
 
 - Older Bazel : Crosstool and toolchains.
 - New Bazel : Platforms and toolchains.
-- cross-compile guide for MIPS : https://mipsym.github.io/mipsym/CrossCompile.html
 
 ## Steps involved 
-- How do you identify a platform? How do you identify a new target platform? Is it a new cpu architecture? New Os? New compiler flags?
-- After identification how to make changes to the way you build it. https://mipsym.github.io/mipsym/CrossCompile.html . Is it a new cpu arch? or a new os? These are enumerated in platforms. 
-- Create a cc_toolchain_config based on toolchain config changes and propogate what platforms this toochain suite supports. There will be multiple toolchains to support multiple environments. 
-- register different flavors of toolchains.
-- cc_toolchain becomes the single rule to access any of the flavors and the correct toolchain is choosen at build time based on passed in information about host and target platform. 
-- Toolchain per platform? For a Mac system building arm-linux build …what will the toolchain be? Toolchain can get the 
-- exec_compatible_With , target_compatible_with. 
+- How do you identify a platform? How do you identify a new target platform? Is it a new cpu architecture? New Os? New compiler flags? These are enumerated in `platforms`. 
+- After identification how to make changes to the way you build it? 
+- Create a cc_toolchain_config based on toolchain config changes and propagate what platforms this toolchain suite supports. There will be multiple toolchains to support multiple environments. 
+- Register different flavors of toolchains.
+- cc_toolchain becomes the single rule to access any of the flavors, and the correct toolchain is chosen at build time based on the passed in information about the host and target platform. 
 
+## New way : Platforms and constraints
+
+1) Defining the Bazel platform.
+Existing constraints : 
+ cpu : https://github.com/bazelbuild/platforms/blob/main/cpu/BUILD  os: https://github.com/bazelbuild/platforms/blob/main/os/BUILD
+
+Extend by adding new constraints as needed by your new target platform : 
+```
+constraint_value(
+    name = "riscv64",
+    constraint_setting = "@platforms//cpu:cpu",
+)
+
+platform(
+    name = "my_new_platform",
+    constraint_values = [
+        ":riscv64",
+    ],
+)
+```
+
+2) Defining the C/C++ toolchain config using the constraints, features etc
+   
+```
+rv64_bare_metal_toolchain_config = rule(
+  implementation = _impl,
+  attrs = {},
+  provides = [CcToolchainConfigInfo],
+)
+
+  ```
+3) Defining the C/C++ toolchain and mark with target_compatible_with , exec_compatible_with attribute to bind them to a platform.
+   ```
+   toolchain(
+      name = "riscv64_bare_metal_toolchain_from_linux_x86_64",
+      exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+      ],
+      target_compatible_with = [
+        "//platform:bare_metal",
+        "@platforms//cpu:riscv64",
+      ],
+      toolchain = ":rv64_bare_metal_toolchain",
+      toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+   )
+   ```
+5) Register toolchain
+6) Toolchain resolution based on platforms
 
 ## Legacy crosstool way 
 
@@ -139,55 +185,7 @@ cc_toolchain_suite(
 
 
 
-## New way : Platforms and constraints
 
-1) Defining the Bazel platform .
-Existing constraints : 
- cpu : https://github.com/bazelbuild/platforms/blob/main/cpu/BUILD  os: https://github.com/bazelbuild/platforms/blob/main/os/BUILD
-
-Extend by adding new constraints as needed by your new target platform : 
-```
-constraint_value(
-    name = "riscv64",
-    constraint_setting = "@platforms//cpu:cpu",
-)
-
-platform(
-    name = "my_new_platform",
-    constraint_values = [
-        ":riscv64",
-    ],
-)
-```
-
-2) Defining the C/C++ toolchain config using the constraints, features etc
-   
-```
-rv64_bare_metal_toolchain_config = rule(
-  implementation = _impl,
-  attrs = {},
-  provides = [CcToolchainConfigInfo],
-)
-
-  ```
-3) Defining the C/C++ toolchain and mark with target_compatible_with , exec_compatible_with attribute to bind them to a platform.
-   ```
-   toolchain(
-      name = "riscv64_bare_metal_toolchain_from_linux_x86_64",
-      exec_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-      ],
-      target_compatible_with = [
-        "//platform:bare_metal",
-        "@platforms//cpu:riscv64",
-      ],
-      toolchain = ":rv64_bare_metal_toolchain",
-      toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
-   )
-   ```
-5) Register toolchain
-6) Toolchain resolution based on platforms
 
 ## Changes to the project rules based on the newly added platform
 - Avoid rules from getting executed on the new platform with `target_compatible_with` flag
