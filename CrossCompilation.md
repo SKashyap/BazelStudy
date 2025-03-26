@@ -10,7 +10,7 @@
 - Register different flavors of toolchains.
 - cc_toolchain becomes the single rule to access any of the flavors, and the correct toolchain is chosen at build time based on the passed in information about the host and target platform. 
 
-## New way : Platforms and constraints 
+### New way : Platforms and constraints 
 
 1) Defining the Bazel platform.
 Existing constraints : 
@@ -60,7 +60,7 @@ rv64_bare_metal_toolchain_config = rule(
 5) Register toolchain
 6) Toolchain resolution based on platforms
 
-## Legacy crosstool way 
+### Legacy crosstool way 
 
 //Tensoflow/BUILD has all the contraints. 
 //tensorflow/tools/toolchains/BUILD has platforms
